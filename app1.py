@@ -10,8 +10,12 @@ import sys
 sys.modules["torch.classes"] = None
 
 # Load spaCy English model
-nlp = spacy.load("en_core_web_sm")
-
+try:
+    nlp = spacy.load("en_core_web_sm")
+except OSError:
+    from spacy.cli import download
+    download("en_core_web_sm")
+    nlp = spacy.load("en_core_web_sm")
 # Function to extract text from PDF
 def extract_text_from_pdf(file):
     pdf = PdfReader(file)
